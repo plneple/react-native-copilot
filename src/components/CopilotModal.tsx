@@ -66,14 +66,15 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
         skip: "Skip",
       },
       svgMaskPath,
-      stopOnOutsideClick = false,
+      nextOnOutsideClick = false,
       arrowColor = "#fff",
       arrowSize = ARROW_SIZE,
-      margin = MARGIN
+      margin = MARGIN,
+      maskChildren,
     },
     ref
   ) {
-    const { stop, currentStep, visible } = useCopilot();
+    const { stop, goToNext, isLastStep, currentStep, visible } = useCopilot();
     const [tooltipStyles, setTooltipStyles] = useState({});
     const [arrowStyles, setArrowStyles] = useState({});
     const [animatedValues] = useState({
@@ -182,9 +183,9 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
           arrow.left = tooltip.left + margin;
         }
 
-        sanitize(arrow)
-        sanitize(tooltip)
-        sanitize(rect)
+        sanitize(arrow);
+        sanitize(tooltip);
+        sanitize(rect);
 
         const animate = [
           ["top", rect.y],
@@ -253,14 +254,14 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
       setLayout(undefined);
     };
 
-    const handleStop = () => {
-      reset();
-      void stop();
-    };
-
     const handleMaskClick = () => {
-      if (stopOnOutsideClick) {
-        handleStop();
+      if (nextOnOutsideClick) {
+        if (isLastStep) {
+          reset();
+          void stop();
+        } else {
+          void goToNext();
+        }
       }
     };
 
@@ -292,6 +293,7 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
         <View style={styles.container} onLayout={handleLayoutChange}>
           {contentVisible && renderMask()}
           {contentVisible && renderTooltip()}
+          {maskChildren}
         </View>
       </Modal>
     );
@@ -382,4 +384,4 @@ const removeNan = (obj: Record<string, any>) => {
 const sanitize = (obj: Record<any, any>) => {
   floorify(obj);
   removeNan(obj);
-}
+};

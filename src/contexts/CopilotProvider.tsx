@@ -42,6 +42,7 @@ interface CopilotContextType {
   isFirstStep: boolean;
   isLastStep: boolean;
   currentStepNumber: number;
+  numberOfSteps: number;
 }
 
 /*
@@ -199,6 +200,7 @@ export const CopilotProvider = ({
       isFirstStep,
       isLastStep,
       currentStepNumber,
+      numberOfSteps: Object.values(steps).length,
     }),
     [
       registerStep,
@@ -214,16 +216,14 @@ export const CopilotProvider = ({
       isFirstStep,
       isLastStep,
       currentStepNumber,
+      steps,
     ]
   );
 
   return (
     <CopilotContext.Provider value={value}>
       <>
-        <CopilotModal
-          ref={modal}
-          {...rest}
-        />
+        <CopilotModal ref={modal} {...rest} />
         {children}
       </>
     </CopilotContext.Provider>

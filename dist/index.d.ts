@@ -82,6 +82,7 @@ interface CopilotContextType {
     isFirstStep: boolean;
     isLastStep: boolean;
     currentStepNumber: number;
+    numberOfSteps: number;
 }
 declare const CopilotProvider: ({ verticalOffset, children, ...rest }: PropsWithChildren<CopilotOptions>) => JSX.Element;
 declare const useCopilot: () => CopilotContextType;

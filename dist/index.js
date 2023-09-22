@@ -999,7 +999,8 @@ var CopilotProvider = (_a) => {
       goToPrev: prev,
       isFirstStep,
       isLastStep,
-      currentStepNumber
+      currentStepNumber,
+      numberOfSteps: Object.values(steps).length
     }),
     [
       registerStep,
@@ -1014,14 +1015,12 @@ var CopilotProvider = (_a) => {
       prev,
       isFirstStep,
       isLastStep,
-      currentStepNumber
+      currentStepNumber,
+      steps
     ]
   );
   return <CopilotContext.Provider value={value}><>
-    <CopilotModal
-      ref={modal}
-      {...rest}
-    />
+    <CopilotModal ref={modal} {...rest} />
     {children}
   </></CopilotContext.Provider>;
 };

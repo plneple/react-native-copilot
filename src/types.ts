@@ -81,4 +81,5 @@ export interface CopilotOptions {
   nextOnOutsideClick?: boolean;
   backdropColor?: string;
   maskChildren?: React.ReactNode;
+  onBackButton: "noop" | "prev" | "stop";
 }

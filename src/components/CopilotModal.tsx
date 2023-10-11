@@ -32,8 +32,6 @@ import {
 
 type Props = CopilotOptions;
 
-const noop = () => {};
-
 const makeDefaultLayout = (): LayoutRectangle => ({
   x: 0,
   y: 0,
@@ -71,10 +69,12 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
       arrowSize = ARROW_SIZE,
       margin = MARGIN,
       maskChildren,
+      onBackButton = "noop",
     },
     ref
   ) {
-    const { stop, goToNext, isLastStep, currentStep, visible } = useCopilot();
+    const { stop, goToPrev, goToNext, isLastStep, currentStep, visible } =
+      useCopilot();
     const [tooltipStyles, setTooltipStyles] = useState({});
     const [arrowStyles, setArrowStyles] = useState({});
     const [animatedValues] = useState({
@@ -265,6 +265,15 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
       }
     };
 
+    const handleBackButton = () => {
+      if (onBackButton === "stop") {
+        void stop();
+      } else if (onBackButton === "prev") {
+        void goToPrev();
+      }
+      // if not otherwise specified, do nothing
+    };
+
     useImperativeHandle(
       ref,
       () => {
@@ -286,7 +295,7 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
       <Modal
         animationType="none"
         visible
-        onRequestClose={noop}
+        onRequestClose={handleBackButton}
         transparent
         supportedOrientations={["portrait", "landscape"]}
       >

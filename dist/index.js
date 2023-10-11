@@ -462,8 +462,6 @@ var Tooltip = ({ labels }) => {
 
 // src/components/CopilotModal.tsx
 init_style();
-var noop = () => {
-};
 var makeDefaultLayout = () => ({
   x: 0,
   y: 0,
@@ -492,9 +490,10 @@ var CopilotModal = (0, import_react3.forwardRef)(
     arrowColor = "#fff",
     arrowSize = ARROW_SIZE,
     margin = MARGIN,
-    maskChildren
+    maskChildren,
+    onBackButton = "noop"
   }, ref) {
-    const { stop, goToNext, isLastStep, currentStep, visible } = useCopilot();
+    const { stop, goToPrev, goToNext, isLastStep, currentStep, visible } = useCopilot();
     const [tooltipStyles, setTooltipStyles] = (0, import_react3.useState)({});
     const [arrowStyles, setArrowStyles] = (0, import_react3.useState)({});
     const [animatedValues] = (0, import_react3.useState)({
@@ -658,6 +657,13 @@ var CopilotModal = (0, import_react3.forwardRef)(
         }
       }
     };
+    const handleBackButton = () => {
+      if (onBackButton === "stop") {
+        void stop();
+      } else if (onBackButton === "prev") {
+        void goToPrev();
+      }
+    };
     (0, import_react3.useImperativeHandle)(
       ref,
       () => {
@@ -675,7 +681,7 @@ var CopilotModal = (0, import_react3.forwardRef)(
     return <import_react_native6.Modal
       animationType="none"
       visible
-      onRequestClose={noop}
+      onRequestClose={handleBackButton}
       transparent
       supportedOrientations={["portrait", "landscape"]}
     ><import_react_native6.View style={styles.container} onLayout={handleLayoutChange}>
@@ -801,7 +807,7 @@ var useStepsMap = () => {
     }
   }, {});
   const orderedSteps = (0, import_react5.useMemo)(
-    () => Object.values(steps).sort((a, b) => a.order - b.order),
+    () => Object.values(steps).filter((step) => step.visible).sort((a, b) => a.order - b.order),
     [steps]
   );
   const stepIndex = (0, import_react5.useCallback)(

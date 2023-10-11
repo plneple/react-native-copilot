@@ -807,7 +807,7 @@ var useStepsMap = () => {
     }
   }, {});
   const orderedSteps = (0, import_react5.useMemo)(
-    () => Object.values(steps).filter((step) => step.visible).sort((a, b) => a.order - b.order),
+    () => Object.values(steps).sort((a, b) => a.order - b.order),
     [steps]
   );
   const stepIndex = (0, import_react5.useCallback)(

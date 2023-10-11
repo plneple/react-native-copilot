@@ -32,10 +32,7 @@ export const useStepsMap = () => {
   }, {});
 
   const orderedSteps = useMemo(
-    () =>
-      Object.values(steps)
-        .filter((step) => step.visible)
-        .sort((a, b) => a.order - b.order),
+    () => Object.values(steps).sort((a, b) => a.order - b.order),
     [steps]
   );
 

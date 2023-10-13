@@ -56,6 +56,8 @@ export const useStepsMap = () => {
     return orderedSteps.find((step) => step.order === 1);
   }, [orderedSteps]);
 
+  console.log(orderedSteps);
+
   const getLastStep = useCallback(
     () => orderedSteps[orderedSteps.length - 1],
     [orderedSteps]

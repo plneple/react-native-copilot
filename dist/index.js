@@ -820,7 +820,10 @@ var useStepsMap = () => {
     (step = currentStep) => stepIndex(step) + 1,
     [currentStep, stepIndex]
   );
-  const getFirstStep = (0, import_react5.useCallback)(() => orderedSteps[0], [orderedSteps]);
+  const getFirstStep = (0, import_react5.useCallback)(
+    () => orderedSteps.find((step) => step.order === 1),
+    [orderedSteps]
+  );
   const getLastStep = (0, import_react5.useCallback)(
     () => orderedSteps[orderedSteps.length - 1],
     [orderedSteps]

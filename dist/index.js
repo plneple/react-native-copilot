@@ -824,7 +824,6 @@ var useStepsMap = () => {
     console.log(orderedSteps);
     return orderedSteps.find((step) => step.order === 1);
   }, [orderedSteps]);
-  console.log(orderedSteps);
   const getLastStep = (0, import_react5.useCallback)(
     () => orderedSteps[orderedSteps.length - 1],
     [orderedSteps]

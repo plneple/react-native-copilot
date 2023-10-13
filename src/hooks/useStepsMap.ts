@@ -52,6 +52,7 @@ export const useStepsMap = () => {
   );
 
   const getFirstStep = useCallback(() => {
+    console.trace("my trace");
     console.log(orderedSteps);
     return orderedSteps.find((step) => step.order === 1);
   }, [orderedSteps]);

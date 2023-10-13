@@ -821,6 +821,7 @@ var useStepsMap = () => {
     [currentStep, stepIndex]
   );
   const getFirstStep = (0, import_react5.useCallback)(() => {
+    console.trace("my trace");
     console.log(orderedSteps);
     return orderedSteps.find((step) => step.order === 1);
   }, [orderedSteps]);

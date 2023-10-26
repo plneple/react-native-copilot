@@ -149,8 +149,8 @@ export const CopilotProvider = ({
       } else {
         copilotEvents.emit("start");
         await setCurrentStep(currentStep);
-        await moveModalToStep(currentStep);
         await setVisibility(true);
+        await moveModalToStep(currentStep);
         startTries.current = 0;
       }
     },

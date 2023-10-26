@@ -284,7 +284,7 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
       [animateMove]
     );
 
-    const modalVisible = containerVisible || visible;
+    const modalVisible = containerVisible && visible;
     const contentVisible = layout != null && containerVisible;
 
     if (!modalVisible) {
@@ -302,7 +302,7 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
         <View style={styles.container} onLayout={handleLayoutChange}>
           {contentVisible && renderMask()}
           {contentVisible && renderTooltip()}
-          {maskChildren}
+          {contentVisible && maskChildren}
         </View>
       </Modal>
     );

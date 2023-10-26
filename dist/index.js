@@ -673,7 +673,7 @@ var CopilotModal = (0, import_react3.forwardRef)(
       },
       [animateMove]
     );
-    const modalVisible = containerVisible || visible;
+    const modalVisible = containerVisible && visible;
     const contentVisible = layout != null && containerVisible;
     if (!modalVisible) {
       return null;
@@ -687,7 +687,7 @@ var CopilotModal = (0, import_react3.forwardRef)(
     ><import_react_native6.View style={styles.container} onLayout={handleLayoutChange}>
       {contentVisible && renderMask()}
       {contentVisible && renderTooltip()}
-      {maskChildren}
+      {contentVisible && maskChildren}
     </import_react_native6.View></import_react_native6.Modal>;
     function renderMask() {
       const MaskComponent = overlay === "svg" ? (
@@ -960,8 +960,8 @@ var CopilotProvider = (_a) => {
       } else {
         copilotEvents.emit("start");
         yield setCurrentStep(currentStep2);
-        yield moveModalToStep(currentStep2);
         yield setVisibility(true);
+        yield moveModalToStep(currentStep2);
         startTries.current = 0;
       }
     }),

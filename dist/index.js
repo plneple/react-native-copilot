@@ -931,14 +931,11 @@ var CopilotProvider = (_a) => {
           );
         }
       }
-      setTimeout(
-        () => {
-          if (move && step) {
-            void moveModalToStep(step);
-          }
-        },
-        scrollView != null ? 100 : 0
-      );
+      setTimeout(() => {
+        if (move && step) {
+          void moveModalToStep(step);
+        }
+      }, 100);
     }),
     [copilotEvents, moveModalToStep, scrollView, setCurrentStepState]
   );

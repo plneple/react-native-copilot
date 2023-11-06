@@ -89,7 +89,7 @@ var init_style = __esm({
     STEP_NUMBER_RADIUS = 14;
     STEP_NUMBER_DIAMETER = STEP_NUMBER_RADIUS * 2;
     ZINDEX = 100;
-    MARGIN = 13;
+    MARGIN = 8;
     OFFSET_WIDTH = 4;
     ARROW_SIZE = 6;
     styles = import_react_native.StyleSheet.create({
@@ -569,18 +569,11 @@ var CopilotModal = (0, import_react3.forwardRef)(
           arrow.borderTopColor = arrowColor;
           arrow.bottom = tooltip.bottom - arrowSize * 2;
         }
+        tooltip.right = margin;
+        tooltip.left = margin;
         if (horizontalPosition === "left") {
-          tooltip.right = Math.max(
-            newMeasuredLayout.width - (rect.x + rect.width),
-            0
-          );
-          tooltip.right = tooltip.right === 0 ? tooltip.right + margin : tooltip.right;
-          tooltip.maxWidth = newMeasuredLayout.width - tooltip.right - margin;
           arrow.right = tooltip.right + margin;
         } else {
-          tooltip.left = Math.max(rect.x, 0);
-          tooltip.left = tooltip.left === 0 ? tooltip.left + margin : tooltip.left;
-          tooltip.maxWidth = newMeasuredLayout.width - tooltip.left - margin;
           arrow.left = tooltip.left + margin;
         }
         sanitize(arrow);

@@ -25,6 +25,7 @@ import { Tooltip } from "./default-ui/Tooltip";
 import {
   ARROW_SIZE,
   MARGIN,
+  OFFSET_WIDTH,
   STEP_NUMBER_DIAMETER,
   STEP_NUMBER_RADIUS,
   styles,
@@ -102,10 +103,23 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
       }
     }, [visible]);
 
-    const handleLayoutChange = ({
+    const handleLayoutChange = async ({
       nativeEvent: { layout: newLayout },
     }: LayoutChangeEvent) => {
       layoutRef.current = newLayout;
+
+      const size = await currentStep?.measure();
+
+      if (!size) {
+        return;
+      }
+
+      await animateMove({
+        width: size.width + OFFSET_WIDTH,
+        height: size.height + OFFSET_WIDTH,
+        x: size.x - OFFSET_WIDTH / 2,
+        y: size.y - OFFSET_WIDTH / 2,
+      });
     };
 
     const measure = async (): Promise<LayoutRectangle> => {

@@ -517,11 +517,21 @@ var CopilotModal = (0, import_react3.forwardRef)(
         reset();
       }
     }, [visible]);
-    const handleLayoutChange = ({
+    const handleLayoutChange = (_0) => __async(this, [_0], function* ({
       nativeEvent: { layout: newLayout }
-    }) => {
+    }) {
       layoutRef.current = newLayout;
-    };
+      const size = yield currentStep == null ? void 0 : currentStep.measure();
+      if (!size) {
+        return;
+      }
+      yield animateMove({
+        width: size.width + OFFSET_WIDTH,
+        height: size.height + OFFSET_WIDTH,
+        x: size.x - OFFSET_WIDTH / 2,
+        y: size.y - OFFSET_WIDTH / 2
+      });
+    });
     const measure = () => __async(this, null, function* () {
       return yield new Promise((resolve) => {
         const updateLayout = () => {

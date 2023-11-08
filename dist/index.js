@@ -562,7 +562,7 @@ var CopilotModal = (0, import_react3.forwardRef)(
         } else {
           tooltip.bottom = newMeasuredLayout.height - (rect.y - margin);
           arrow.borderTopColor = arrowColor;
-          arrow.bottom = tooltip.bottom + arrowSize * 2 + margin / 2;
+          arrow.bottom = tooltip.bottom - arrowSize * 2 + margin / 2;
         }
         tooltip.right = margin;
         tooltip.left = margin;

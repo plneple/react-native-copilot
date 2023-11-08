@@ -103,13 +103,16 @@ var init_style = __esm({
       },
       arrow: {
         position: "absolute",
-        borderColor: "transparent",
+        borderTopColor: "transparent",
+        borderBottomColor: "transparent",
+        borderLeftColor: "transparent",
+        borderRightColor: "transparent",
         borderWidth: ARROW_SIZE
       },
       tooltip: {
         position: "absolute",
-        paddingTop: 15,
-        paddingHorizontal: 15,
+        paddingTop: 8,
+        paddingHorizontal: 12,
         backgroundColor: "#fff",
         borderRadius: 3,
         overflow: "hidden"
@@ -517,21 +520,6 @@ var CopilotModal = (0, import_react3.forwardRef)(
         reset();
       }
     }, [visible]);
-    const handleLayoutChange = (_0) => __async(this, [_0], function* ({
-      nativeEvent: { layout: newLayout }
-    }) {
-      layoutRef.current = newLayout;
-      const size = yield currentStep == null ? void 0 : currentStep.measure();
-      if (!size) {
-        return;
-      }
-      yield animateMove({
-        width: size.width + OFFSET_WIDTH,
-        height: size.height + OFFSET_WIDTH,
-        x: size.x - OFFSET_WIDTH / 2,
-        y: size.y - OFFSET_WIDTH / 2
-      });
-    });
     const measure = () => __async(this, null, function* () {
       return yield new Promise((resolve) => {
         const updateLayout = () => {
@@ -562,30 +550,23 @@ var CopilotModal = (0, import_react3.forwardRef)(
           x: rect.x + rect.width / 2,
           y: rect.y + rect.height / 2
         };
-        const relativeToLeft = center.x;
         const relativeToTop = center.y;
         const relativeToBottom = Math.abs(center.y - newMeasuredLayout.height);
-        const relativeToRight = Math.abs(center.x - newMeasuredLayout.width);
         const verticalPosition = relativeToBottom > relativeToTop ? "bottom" : "top";
-        const horizontalPosition = relativeToLeft > relativeToRight ? "left" : "right";
         const tooltip = {};
         const arrow = {};
         if (verticalPosition === "bottom") {
-          tooltip.top = rect.y + rect.height + margin;
+          tooltip.top = rect.y + rect.height + margin + margin / 2;
           arrow.borderBottomColor = arrowColor;
           arrow.top = tooltip.top - arrowSize * 2;
         } else {
           tooltip.bottom = newMeasuredLayout.height - (rect.y - margin);
           arrow.borderTopColor = arrowColor;
-          arrow.bottom = tooltip.bottom - arrowSize * 2;
+          arrow.bottom = tooltip.bottom + arrowSize * 2 + margin / 2;
         }
         tooltip.right = margin;
         tooltip.left = margin;
-        if (horizontalPosition === "left") {
-          arrow.right = tooltip.right + margin;
-        } else {
-          arrow.left = tooltip.left + margin;
-        }
+        arrow.right = newMeasuredLayout.width - (rect.x + rect.width / 2 + arrowSize);
         sanitize(arrow);
         sanitize(tooltip);
         sanitize(rect);
@@ -645,6 +626,28 @@ var CopilotModal = (0, import_react3.forwardRef)(
       }),
       [_animateMove]
     );
+    const handleLayoutChange = (0, import_react3.useCallback)(
+      (_0) => __async(this, [_0], function* ({ nativeEvent: { layout: newLayout } }) {
+        layoutRef.current = newLayout;
+        const size = yield currentStep == null ? void 0 : currentStep.measure();
+        if (!size) {
+          return;
+        }
+        yield animateMove({
+          width: size.width + OFFSET_WIDTH,
+          height: size.height + OFFSET_WIDTH,
+          x: size.x - OFFSET_WIDTH / 2,
+          y: size.y - OFFSET_WIDTH / 2
+        });
+      }),
+      [animateMove, currentStep]
+    );
+    const handleOnLayout = (0, import_react3.useCallback)(
+      (e) => {
+        void handleLayoutChange(e);
+      },
+      [handleLayoutChange]
+    );
     const reset = () => {
       setIsAnimated(false);
       setContainerVisible(false);
@@ -687,7 +690,7 @@ var CopilotModal = (0, import_react3.forwardRef)(
       onRequestClose={handleBackButton}
       transparent
       supportedOrientations={["portrait", "landscape"]}
-    ><import_react_native6.View style={styles.container} onLayout={handleLayoutChange}>
+    ><import_react_native6.View style={styles.container} onLayout={handleOnLayout}>
       {contentVisible && renderMask()}
       {contentVisible && renderTooltip()}
       {contentVisible && maskChildren}

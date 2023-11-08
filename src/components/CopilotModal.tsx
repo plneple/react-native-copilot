@@ -103,25 +103,6 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
       }
     }, [visible]);
 
-    const handleLayoutChange = async ({
-      nativeEvent: { layout: newLayout },
-    }: LayoutChangeEvent) => {
-      layoutRef.current = newLayout;
-
-      const size = await currentStep?.measure();
-
-      if (!size) {
-        return;
-      }
-
-      await animateMove({
-        width: size.width + OFFSET_WIDTH,
-        height: size.height + OFFSET_WIDTH,
-        x: size.x - OFFSET_WIDTH / 2,
-        y: size.y - OFFSET_WIDTH / 2,
-      });
-    };
-
     const measure = async (): Promise<LayoutRectangle> => {
       return await new Promise((resolve) => {
         const updateLayout = () => {
@@ -157,37 +138,29 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
           y: rect.y + rect.height / 2,
         };
 
-        const relativeToLeft = center.x;
         const relativeToTop = center.y;
         const relativeToBottom = Math.abs(center.y - newMeasuredLayout.height);
-        const relativeToRight = Math.abs(center.x - newMeasuredLayout.width);
 
         const verticalPosition =
           relativeToBottom > relativeToTop ? "bottom" : "top";
-        const horizontalPosition =
-          relativeToLeft > relativeToRight ? "left" : "right";
 
         const tooltip: ViewStyle = {};
         const arrow: ViewStyle = {};
 
         if (verticalPosition === "bottom") {
-          tooltip.top = rect.y + rect.height + margin;
+          tooltip.top = rect.y + rect.height + margin + margin / 2;
           arrow.borderBottomColor = arrowColor;
           arrow.top = tooltip.top - arrowSize * 2;
         } else {
           tooltip.bottom = newMeasuredLayout.height - (rect.y - margin);
           arrow.borderTopColor = arrowColor;
-          arrow.bottom = tooltip.bottom - arrowSize * 2;
+          arrow.bottom = tooltip.bottom + arrowSize * 2 + margin / 2;
         }
 
         tooltip.right = margin;
         tooltip.left = margin;
-
-        if (horizontalPosition === "left") {
-          arrow.right = tooltip.right + margin;
-        } else {
-          arrow.left = tooltip.left + margin;
-        }
+        arrow.right =
+          newMeasuredLayout.width - (rect.x + rect.width / 2 + arrowSize);
 
         sanitize(arrow);
         sanitize(tooltip);
@@ -254,6 +227,33 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
       [_animateMove]
     );
 
+    const handleLayoutChange = useCallback(
+      async ({ nativeEvent: { layout: newLayout } }: LayoutChangeEvent) => {
+        layoutRef.current = newLayout;
+
+        const size = await currentStep?.measure();
+
+        if (!size) {
+          return;
+        }
+
+        await animateMove({
+          width: size.width + OFFSET_WIDTH,
+          height: size.height + OFFSET_WIDTH,
+          x: size.x - OFFSET_WIDTH / 2,
+          y: size.y - OFFSET_WIDTH / 2,
+        });
+      },
+      [animateMove, currentStep]
+    );
+
+    const handleOnLayout = useCallback(
+      (e: LayoutChangeEvent) => {
+        void handleLayoutChange(e);
+      },
+      [handleLayoutChange]
+    );
+
     const reset = () => {
       setIsAnimated(false);
       setContainerVisible(false);
@@ -305,7 +305,7 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
         transparent
         supportedOrientations={["portrait", "landscape"]}
       >
-        <View style={styles.container} onLayout={handleLayoutChange}>
+        <View style={styles.container} onLayout={handleOnLayout}>
           {contentVisible && renderMask()}
           {contentVisible && renderTooltip()}
           {contentVisible && maskChildren}

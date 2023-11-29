@@ -165,8 +165,8 @@ var init_style = __esm({
         position: "absolute",
         left: 0,
         top: 0,
-        bottom: 0,
-        right: 0
+        bottom: import_react_native.Platform.OS === "android" ? -1 : 0,
+        right: import_react_native.Platform.OS === "android" ? -1 : 0
       }
     });
   }

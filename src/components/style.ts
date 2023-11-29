@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 export const STEP_NUMBER_RADIUS: number = 14;
 export const STEP_NUMBER_DIAMETER: number = STEP_NUMBER_RADIUS * 2;
@@ -80,7 +80,7 @@ export const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     top: 0,
-    bottom: 0,
-    right: 0,
+    bottom: Platform.OS === "android" ? -1 : 0,
+    right: Platform.OS === "android" ? -1 : 0,
   },
 });

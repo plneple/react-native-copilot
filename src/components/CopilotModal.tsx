@@ -71,6 +71,7 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
       margin = MARGIN,
       maskChildren,
       onBackButton = "noop",
+      onMaskPress,
     },
     ref
   ) {
@@ -261,6 +262,7 @@ export const CopilotModal = forwardRef<CopilotModalHandle, Props>(
     };
 
     const handleMaskClick = () => {
+      if (onMaskPress) onMaskPress();
       if (nextOnOutsideClick) {
         if (isLastStep) {
           reset();

@@ -494,7 +494,8 @@ var CopilotModal = (0, import_react3.forwardRef)(
     arrowSize = ARROW_SIZE,
     margin = MARGIN,
     maskChildren,
-    onBackButton = "noop"
+    onBackButton = "noop",
+    onMaskPress
   }, ref) {
     const { stop, goToPrev, goToNext, isLastStep, currentStep, visible } = useCopilot();
     const [tooltipStyles, setTooltipStyles] = (0, import_react3.useState)({});
@@ -654,6 +655,8 @@ var CopilotModal = (0, import_react3.forwardRef)(
       setLayout(void 0);
     };
     const handleMaskClick = () => {
+      if (onMaskPress)
+        onMaskPress();
       if (nextOnOutsideClick) {
         if (isLastStep) {
           reset();

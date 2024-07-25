@@ -74,6 +74,7 @@ export interface CopilotOptions {
   labels?: Labels;
   androidStatusBarVisible?: boolean;
   svgMaskPath?: SvgMaskPathFunction;
+  onMaskPress?(): void;
   verticalOffset?: number;
   arrowColor?: string;
   arrowSize?: number;

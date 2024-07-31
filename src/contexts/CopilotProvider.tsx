@@ -122,7 +122,7 @@ export const CopilotProvider = ({
         }
       }, 100);
     },
-    [copilotEvents, moveModalToStep, scrollView, setCurrentStepState]
+    [copilotEvents, moveModalToStep, scrollView]
   );
 
   const start = useCallback(
@@ -156,8 +156,6 @@ export const CopilotProvider = ({
       getFirstStep,
       moveModalToStep,
       scrollView,
-      setCurrentStep,
-      setVisibility,
       steps,
     ]
   );
@@ -165,22 +163,22 @@ export const CopilotProvider = ({
   const stop = useCallback(async () => {
     await setVisibility(false);
     copilotEvents.emit("stop");
-  }, [copilotEvents, setVisibility]);
+  }, [copilotEvents]);
 
   const next = useCallback(async () => {
     await setCurrentStep(getNextStep());
-  }, [getNextStep, setCurrentStep]);
+  }, [getNextStep]);
 
   const nth = useCallback(
     async (n: number) => {
       await setCurrentStep(getNthStep(n));
     },
-    [getNthStep, setCurrentStep]
+    [getNthStep]
   );
 
   const prev = useCallback(async () => {
     await setCurrentStep(getPrevStep());
-  }, [getPrevStep, setCurrentStep]);
+  }, [getPrevStep]);
 
   const value = useMemo(
     () => ({

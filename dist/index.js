@@ -946,7 +946,7 @@ var CopilotProvider = (_a) => {
         }
       }, 100);
     }),
-    [copilotEvents, moveModalToStep, scrollView, setCurrentStepState]
+    [copilotEvents, moveModalToStep, scrollView]
   );
   const start = (0, import_react6.useCallback)(
     (fromStep, suppliedScrollView = null) => __async(void 0, null, function* () {
@@ -976,27 +976,25 @@ var CopilotProvider = (_a) => {
       getFirstStep,
       moveModalToStep,
       scrollView,
-      setCurrentStep,
-      setVisibility,
       steps
     ]
   );
   const stop = (0, import_react6.useCallback)(() => __async(void 0, null, function* () {
     yield setVisibility(false);
     copilotEvents.emit("stop");
-  }), [copilotEvents, setVisibility]);
+  }), [copilotEvents]);
   const next = (0, import_react6.useCallback)(() => __async(void 0, null, function* () {
     yield setCurrentStep(getNextStep());
-  }), [getNextStep, setCurrentStep]);
+  }), [getNextStep]);
   const nth = (0, import_react6.useCallback)(
     (n) => __async(void 0, null, function* () {
       yield setCurrentStep(getNthStep(n));
     }),
-    [getNthStep, setCurrentStep]
+    [getNthStep]
   );
   const prev = (0, import_react6.useCallback)(() => __async(void 0, null, function* () {
     yield setCurrentStep(getPrevStep());
-  }), [getPrevStep, setCurrentStep]);
+  }), [getPrevStep]);
   const value = (0, import_react6.useMemo)(
     () => ({
       registerStep,
